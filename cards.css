@@ -1,43 +1,87 @@
-.container {
-  width: 1600px;
+.body__container {
+  max-width: 1600px;
   height: 100%;
+}
+.body__header {
+  max-width: 2000px;
+  height: 100px;
+}
+.header {
+  background-color: floralwhite;
+  border-radius: 5px;
+}
+.header__fullCart {
+  width: 100px;
+  height: 100%;
+  position: relative;
+}
+.fullCart__cart {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   margin: auto;
 }
 .container__card {
-  position: relative;
   margin: 15px;
-}
-.card {
-  background-color: floralwhite;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  border-radius: 5px;
   width: 350px;
   height: 400px;
 }
+.card {
+  background-color: floralwhite;
+  border-radius: 5px;
+  position: relative;
+}
+.card:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
 .card__tablo {
   position: absolute;
   bottom: 0;
   left: 100px;
   margin-bottom: 20px;
 }
-.button {
-  margin: 0;
-}
+
 .imgProduct {
-  background-color: rosybrown;
-  width: 200px;
-  height: 200px;
   border-radius: 50%;
   display: block;
 }
-.container__imgProduct {
+.card__imgProduct {
+  width: 200px;
+  height: 200px;
   margin: 50px auto 25px;
-  
 }
-p{
-    margin: 0;
+.card__description {
+  margin: 0;
+  font-size: 14px;
+  padding: 0 14px;
+  opacity: 0.5;
 }
-
+.card__count {
+  width: 30px;
+}
+.card__addToCart {
+  width: 80px;
+  position: absolute;
+}
+.card__addToCart:hover {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+.quantity{
+    background-color: tomato;
+    display: block;
+    border-radius: 50%;
+}
+.fullCart__quantity{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+   top: 40px;
+   left: 35px;
+}
