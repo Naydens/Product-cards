@@ -1,12 +1,11 @@
 .body__container {
   max-width: 1600px;
   height: 100%;
+  margin: auto;
 }
 .body__header {
   max-width: 2000px;
   height: 100px;
-}
-.header {
   background-color: floralwhite;
   border-radius: 5px;
 }
@@ -45,13 +44,14 @@ float: right;
 .container {
   display: flex;
   flex-wrap: wrap;
-  margin: auto;
+  
 }
 .container__card {
   margin: 15px;
   width: 350px;
   height: 400px;
 }
+
 .card {
   background-color: floralwhite;
   border-radius: 5px;
@@ -75,7 +75,7 @@ float: right;
 .card__imgProduct {
   width: 200px;
   height: 200px;
-  margin: 50px auto 25px;
+  margin: 30px auto 25px;
 }
 .card__description {
   margin: 0;
@@ -98,4 +98,8 @@ content:"\f07a" ;
 font-family: FontAwesome;
 color: #aaaaaa;
 margin-right: 10px;
+}
+.card__price {
+  margin: 0 0 10px;
+  text-align: center;
 }

@@ -1,4 +1,4 @@
-const minusQuantity = document.querySelectorAll(".js-minus-quantity");
+ const minusQuantity = document.querySelectorAll(".js-minus-quantity");
 
 const plusQuantity = document.querySelectorAll(".js-plus-quantity");
 
