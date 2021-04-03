@@ -1,0 +1,28 @@
+body {
+  margin: 0;
+}
+.container {
+  display: flex;
+justify-content: space-around;
+}
+.bodyPage__container {
+  max-width: 1400px;
+  height: 95vh;
+  margin: 30px auto 0;
+}
+.container__leftSide{
+  width: 750px;
+  height: 100%;
+  border-radius: 5px;
+  background-color: floralwhite;
+}
+.container__rightSide{
+  width: 550px;
+  height: 100%;
+  border-radius: 5px;
+  background-color: floralwhite;
+}
+.container__mainImgProducta{
+  display: block;
+  margin: 10px auto 20px;
+}
