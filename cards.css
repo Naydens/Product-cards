@@ -58,11 +58,11 @@
 .card {
   position: relative;
   overflow: auto;
-  background-color: floralwhite;
+  border: 1px solid grey;
   border-radius: 5px;
 }
 .container__card {
-  margin: 25px;
+  margin: 24px;
   width: 350px;
   height: 400px;
 }
@@ -94,7 +94,7 @@
   border: 1px solid #ddd;
   padding: 0;
   box-sizing: border-box;
-
+margin: 0 5px;
 }
 .amount:focus {
   border: 3px solid #ddd;
@@ -104,7 +104,6 @@
 
 /* img product*/
 .imgProduct {
-  border-radius: 50%;
   display: block;
 }
 .card__imgProduct {

@@ -8,216 +8,201 @@ const addToCartButtons = document.querySelectorAll(".js-add-to-cart");
 
 const inputCount = document.querySelectorAll(".js-cart-count");
 
-const ddd = document.querySelector(".header");
-ddd.addEventListener("click", losd);
-function losd(){
-  console.log("click");
-  fetch('https://fakestoreapi.com/products')
-            .then(res=>res.json())
-            .then(json=>loadF(json))
+/* fetch, show data on page start */
+window.addEventListener("load", fetchFakeApi);
+
+// window.addEventListener("load", showQuantityItems);
+
+function fetchFakeApi() {
+  fetch("https://fakestoreapi.com/products")
+    .then((res) => res.json())
+    .then((json) => showInfo(json));
 }
-function loadF(data){
-  let divContainer=document.querySelector(".container");
+function showInfo(data) {
+  let divContainer = document.querySelector(".container");
 
-  let divCard = document.createElement("div");
-  let imgCard = document.createElement("img");
-  let h4FP = document.createElement("h4");
-  let pDesc = document.createElement("p");
-  let h4SP = document.createElement("h4");
-  let divTablo = document.createElement("div");
-  let buttonM = document.createElement("button");
-  let buttonP = document.createElement("button");
-  let buttonAdd = document.createElement("button");
-  let inputCount = document.createElement("input");
+  for (let i = 0; i < data.length; i++) {
+    let divCard = document.createElement("div");
+    let imgCard = document.createElement("img");
+    let h4FP = document.createElement("h4");
+    let pDesc = document.createElement("p");
+    let h4SP = document.createElement("h4");
+    let divTablo = document.createElement("div");
+    let buttonM = document.createElement("button");
+    let buttonP = document.createElement("button");
+    let buttonAdd = document.createElement("button");
+    let inputCount = document.createElement("input");
 
-  divCard.className = "card container__card js-div-card";
-  document.body.appendChild(divCard);
+    divCard.className = "card container__card js-div-card";
+    divContainer.appendChild(divCard);
 
-  imgCard.className="imgProduct card__imgProduct js-img-photo";
-  imgCard.src = data[1].image;
-  imgCard.alt = "photo producta";
-  divCard.appendChild(imgCard);
+    imgCard.className = "imgProduct card__imgProduct js-img-photo";
+    imgCard.src = data[i].image;
+    imgCard.alt = "photo producta";
+    divCard.appendChild(imgCard);
 
-  h4FP.className = "price card__price js-h4-priceFirst";
-  h4FP.innerHTML = data[1].price;
-  divCard.appendChild(h4FP);
+    h4FP.className = "price card__price js-h4-priceFirst";
+    h4FP.innerHTML = data[i].price;
+    divCard.appendChild(h4FP);
 
-  pDesc.className ="description card__description js-p-description";
-  pDesc.innerHTML = data[1].description;
-  divCard.appendChild(pDesc);
+    pDesc.className = "description card__description js-p-description";
+    pDesc.innerHTML = data[i].description;
+    divCard.appendChild(pDesc);
 
-  h4SP.className = "card__fileName js-h4-priceSecond";
-  h4SP.innerHTML = data[1].price;
-  divCard.appendChild(h4SP);
+    h4SP.className = "card__fileName js-h4-priceSecond";
+    h4SP.innerHTML = data[i].price;
+    divCard.appendChild(h4SP);
 
-  divTablo.className = "positionInTablo card__tablo js-div-tablo";
+    divTablo.className = "positionInTablo card__tablo js-div-tablo";
 
-  buttonM.className = "js-minus-quantity amount";
-  buttonM.innerHTML = "&#8722";
-  divTablo.appendChild(buttonM);
+    buttonM.className = "js-minus-quantity amount";
+    buttonM.innerHTML = "&#8722";
+    buttonM.addEventListener("click", minus);
+    divTablo.appendChild(buttonM);
 
-
-  inputCount.className = "js-cart-count  count";
-  inputCount.value="1";
-  inputCount.name = "card__count";
-  divTablo.appendChild(inputCount);
-
-  buttonP.className = "js-plus-quantity amount";
-  buttonP.innerHTML = "&#43";
-  divTablo.appendChild(buttonP);
-
-  buttonAdd.className = "addToCart js-add-to-cart";
-  buttonAdd.innerHTML = "add to cart";
-  buttonAdd.setAttribute("data-product-id","1");
-  divTablo.appendChild(buttonAdd);
-
-  divCard.appendChild(divTablo);
-}
-
-
-
-
-  /* validation */
-
-  for (let i = 0; i < inputCount.length; i++) {
-    const elem = inputCount[i];
-    elem.addEventListener("input", OnlyNumbersValidation);
-
-    function OnlyNumbersValidation(e) {
-      e.target.value = e.target.value.replace(/[^\d]{5}/g, "");
-    }
-  }
-
-  function validate(text, rules) {
-    console.log(typeof text);
-  }
-
-  /* events focus start */
-
-  for (let i = 0; i < inputCount.length; i++) {
-    const elem = inputCount[i];
-    elem.addEventListener("focus", function (e) {
+    inputCount.className = "js-cart-count  count";
+    inputCount.value = "1";
+    inputCount.name = "card__count";
+    inputCount.addEventListener("input", OnlyNumbersValidation);
+    inputCount.addEventListener("focus", function (e) {
       e.target.value = "";
     });
+    inputCount.addEventListener("blur", function (e) {
+      if (e.target.value == 0 || e.target.value == "") {
+        e.target.value = "1";
+      } else {
+        e.target.value = e.target.value;
+      }
+    });
+    divTablo.appendChild(inputCount);
+
+    buttonP.className = "js-plus-quantity amount";
+    buttonP.innerHTML = "&#43";
+    buttonP.addEventListener("click", plus);
+    divTablo.appendChild(buttonP);
+
+    buttonAdd.className = "addToCart js-add-to-cart";
+    buttonAdd.innerHTML = "add to cart";
+    buttonAdd.addEventListener("click", addToCart);
+    buttonAdd.setAttribute("data-product-id", data[i].id);
+    divTablo.appendChild(buttonAdd);
+
+    divCard.appendChild(divTablo);
   }
+}
+/* fetch, show data on page end */
 
-  /* events focus end */
+/* validation */
+for (let i = 0; i < inputCount.length; i++) {
+  const elem = inputCount[i];
+  elem.addEventListener("input", OnlyNumbersValidation);
+}
+function OnlyNumbersValidation(e) {
+  let regex = /[^\d]/g;
+  e.target.value = e.target.value.replace(regex, "");
+}
 
-  /* function add to cart start*/
-  for (let i = 0; i < addToCartButtons.length; i++) {
-    const elem = addToCartButtons[i];
-    elem.addEventListener("click", addToCart);
-  }
+/* events focus,blur start */
+for (let i = 0; i < inputCount.length; i++) {
+  const elem = inputCount[i];
+  elem.addEventListener("focus", function (e) {
+    e.target.value = "";
+  });
+}
 
-  function addToCart(e) {
-    const productId = e.target.getAttribute("data-product-id");
-    const quantity = parseInt(
-      e.target.parentNode.querySelector(".js-cart-count").value
-    );
-    if (cart[productId] === undefined) {
-      cart[productId] = quantity;
+for (let i = 0; i < inputCount.length; i++) {
+  const elem = inputCount[i];
+  elem.addEventListener("blur", function (e) {
+    if (e.target.value == 0 || e.target.value == "") {
+      e.target.value = "1";
     } else {
-      cart[productId] += quantity;
+      e.target.value = e.target.value;
     }
+  });
+}
+/* events focus,blur end */
 
-    cartQuantity.innerHTML = calculateTotalCartItems();
+/* function add to cart start*/
+let cart = {};
+
+for (let i = 0; i < addToCartButtons.length; i++) {
+  const elem = addToCartButtons[i];
+  elem.addEventListener("click", addToCart);
+}
+
+function addToCart(e) {
+  const productId = e.target.getAttribute("data-product-id");
+  const quantity = parseInt(
+    e.target.parentNode.querySelector(".js-cart-count").value
+  );
+  console.log(cart[productId]);
+  if (cart[productId] === undefined) {
+    cart[productId] = quantity;
+  } else {
+    cart[productId] += quantity;
   }
+  cartQuantity.innerHTML = calculateTotalCartItems();
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 
-  const cart = {};
-
-  function calculateTotalCartItems() {
-    let total = 0;
-    for (let key in cart) {
-      total += cart[key];
-    }
-    return total;
+function calculateTotalCartItems() {
+  let total = 0;
+  for (let key in cart) {
+    total += cart[key];
   }
-  /* function add to cart end*/
+  return total;
+}
+/* function add to cart end*/
 
-  /* function minus start */
+/* function minus start */
+for (let i = 0; i < minusQuantity.length; i++) {
+  const elem = minusQuantity[i];
+  elem.addEventListener("click", minus);
+}
 
-  for (let i = 0; i < minusQuantity.length; i++) {
-    const elem = minusQuantity[i];
-    elem.addEventListener("click", minus);
+function minus(e) {
+  const input = e.target.nextSibling;
+  if (input.value > 1) {
+    input.value--;
   }
+}
+/* function minus end */
 
-  function minus(e) {
-    const input = e.target.nextSibling.nextSibling;
-    if (input.value > 1) {
-      input.value--;
-    }
+/* function plus start */
+
+for (let i = 0; i < plusQuantity.length; i++) {
+  const elem = plusQuantity[i];
+  elem.addEventListener("click", plus);
+}
+
+function plus(e) {
+  const input = e.target.previousSibling;
+  if (input.value < input.size) {
+    input.value++;
   }
-  /* function minus end */
-
-  /* function plus start */
-
-  for (let i = 0; i < plusQuantity.length; i++) {
-    const elem = plusQuantity[i];
-    elem.addEventListener("click", plus);
-  }
-
-  function plus(e) {
-    const input = e.target.previousSibling.previousSibling;
-    if (input.value < input.size) {
-      input.value++;
-    }
-  }
+}
 /* function plus end */
 
-// for(let i = 0;i<inputCount.length;i++){
-//   const elem = inputCount[i];
-//   elem.addEventListener("blur", function(e) {
-//     e.target.value = 1;
-//     console.log(e.target.value)
-//     })
-// }
+let cartLocal = localStorage.getItem("cart"); //string or null
+// let cartLocal = localStorage["cart"]; //string or undefined
+//undefined->catch
+//"hello"-> catch
+// int in string  "10" -> try
+try {
+  cart = JSON.parse(cartLocal);
+  // if(typeof cart === "number" || typeof cart === "boolean" || cart === null || Array.isArray(cart)){
+  //   cart ={};
+  //   localStorage.setItem("cart",JSON.stringify(cart));
+  // }
 
-// function putDataOnPage(data) {
-//   divContainer = document.querySelector("container");
+  if (!(typeof cart === "object" && cart != null && !Array.isArray(cart))) {
+    cart = {};
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+} catch (err) {
+  console.dir(err);
+  cart = {};
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 
 
-//   for (let i = 0; i < 5; i++) {
-//     let divCard = document.createElement("div");
-//     let imgPhoto = document.createElement("img");
-//     let h4PriceF = document.createElement("h4");
-//     let h4PriceS = document.createElement("h4");
-//     let pDescription = document.createElement("p");
-//     let divTablo = document.createElement("div");
-//     let buttonMinus = document.createElement("button");
-//     let buttonPlus = document.createElement("button");
-//     let input = document.createElement("input");
-//     let buttonAddTo = document.createElement("div");
-
-//     divCard.className = "card container__card js-div-card";
-//     imgPhoto.className = "imgProduct card__imgProduct js-img-photo";
-//     h4PriceF.className = "price card__price js-h4-priceFirst";
-//     h4PriceS.className = "card__fileName js-h4-priceSecond";
-//     pDescription.className = "description card__description js-p-description";
-//     divTablo.className = "description card__description js-p-description";
-//     buttonMinus.className = "js-minus-quantity amount";
-//     buttonPlus.className = "js-plus-quantity amount";
-//     input.className = "js-cart-count  count";
-//     buttonAddTo.className = "addToCart js-add-to-cart";
-
-//     h4PriceF.innerHTML = data[i].price;
-//     h4PriceS.innerHTML = data[i].price;
-//     pDescription.innerHTML = data[i].description;
-//     buttonMinus.innerHTML = "&#8722";
-//     buttonPlus.innerHTML = "&#43";
-//     buttonAddTo.innerHTML = "add to cart";
-
-//     divContainer.appendChild(divCard);
-//     divCard.appendChild(imgPhoto);
-//     divCard.appendChild(h4PriceF);
-//     divCard.appendChild(pDescription);
-
-//     divCard.appendChild(h4PriceS);
-//     divCard.appendChild(divTablo);
-//     divTablo.appendChild(buttonMinus);
-//     divTablo.appendChild(inputCount);
-//     divTablo.appendChild(buttonPlus);
-//     divTablo.appendChild(buttonAddTo);
-  
-//   }
-//   document.body.appendChild(divContainer);
-// }
