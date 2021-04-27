@@ -124,6 +124,7 @@ for (let i = 0; i < inputCount.length; i++) {
 
 /* function add to cart start*/
 let cart = {};
+let purchases = {};
 
 for (let i = 0; i < addToCartButtons.length; i++) {
   const elem = addToCartButtons[i];
@@ -135,9 +136,24 @@ function addToCart(e) {
   const quantity = parseInt(
     e.target.parentNode.querySelector(".js-cart-count").value
   );
-  console.log(cart[productId]);
+
   if (cart[productId] === undefined) {
     cart[productId] = quantity;
+
+    fetch(`https://fakestoreapi.com/products/${productId}`)
+      .then((res) => res.json())
+      .then((json) => fillingInLocalStorage(json, productId));
+
+    function fillingInLocalStorage(data, prodId) {
+      let purchaseInfo = {};
+      purchaseInfo["id"] = prodId;
+      purchaseInfo["quantity"] = quantity;
+      purchaseInfo["price"] = data.price;
+      purchaseInfo["img"] = data.image;
+      purchaseInfo["title"] = data.title;
+      purchases[prodId] = purchaseInfo;
+      localStorage.setItem("purchases", JSON.stringify(purchases));
+    }
   } else {
     cart[productId] += quantity;
   }
@@ -199,10 +215,9 @@ try {
     cart = {};
     localStorage.setItem("cart", JSON.stringify(cart));
   }
+  cartQuantity.innerHTML = calculateTotalCartItems();
 } catch (err) {
   console.dir(err);
   cart = {};
   localStorage.setItem("cart", JSON.stringify(cart));
 }
-
-
