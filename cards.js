@@ -156,7 +156,13 @@ function addToCart(e) {
     }
   } else {
     cart[productId] += quantity;
-  }
+    
+
+    let localInfo = localStorage.getItem("purchases");
+    let parseLocalInfo = JSON.parse(localStorage.getItem("purchases"));
+    parseLocalInfo[productId].quantity = cart[productId];
+    localStorage.setItem("purchases", JSON.stringify(parseLocalInfo))
+}
   cartQuantity.innerHTML = calculateTotalCartItems();
   localStorage.setItem("cart", JSON.stringify(cart));
 }
@@ -199,17 +205,25 @@ function plus(e) {
 }
 /* function plus end */
 
+
+
 let cartLocal = localStorage.getItem("cart"); //string or null
+let purchasesLocal = localStorage.getItem("purchases");
 // let cartLocal = localStorage["cart"]; //string or undefined
 //undefined->catch
 //"hello"-> catch
 // int in string  "10" -> try
 try {
   cart = JSON.parse(cartLocal);
+  purchases = JSON.parse(purchasesLocal);
   // if(typeof cart === "number" || typeof cart === "boolean" || cart === null || Array.isArray(cart)){
   //   cart ={};
   //   localStorage.setItem("cart",JSON.stringify(cart));
   // }
+  if (!(typeof purchases === "object" && purchases != null && !Array.isArray(purchases))) {
+    purchases = {};
+    localStorage.setItem("purchases", JSON.stringify(purchases));
+  }
 
   if (!(typeof cart === "object" && cart != null && !Array.isArray(cart))) {
     cart = {};
@@ -217,7 +231,10 @@ try {
   }
   cartQuantity.innerHTML = calculateTotalCartItems();
 } catch (err) {
-  console.dir(err);
+  // console.dir(err);
   cart = {};
   localStorage.setItem("cart", JSON.stringify(cart));
+  
+  purchases = {};
+  localStorage.setItem("purchases", JSON.stringify(purchases));
 }
