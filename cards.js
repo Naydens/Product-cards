@@ -16,9 +16,9 @@ window.addEventListener("load", fetchFakeApi);
 function fetchFakeApi() {
   fetch("https://fakestoreapi.com/products")
     .then((res) => res.json())
-    .then((json) => showInfo(json));
+    .then((json) => showInfoCards(json));
 }
-function showInfo(data) {
+function showInfoCards(data) {
   let divContainer = document.querySelector(".container");
 
   for (let i = 0; i < data.length; i++) {
@@ -156,13 +156,12 @@ function addToCart(e) {
     }
   } else {
     cart[productId] += quantity;
-    
 
-    let localInfo = localStorage.getItem("purchases");
-    let parseLocalInfo = JSON.parse(localStorage.getItem("purchases"));
-    parseLocalInfo[productId].quantity = cart[productId];
-    localStorage.setItem("purchases", JSON.stringify(parseLocalInfo))
-}
+    // let localInfo = localStorage.getItem("purchases");
+    // let parseLocalInfo = JSON.parse(localStorage.getItem("purchases"));
+    // parseLocalInfo[productId].quantity = cart[productId];
+    // localStorage.setItem("purchases", JSON.stringify(parseLocalInfo))
+  }
   cartQuantity.innerHTML = calculateTotalCartItems();
   localStorage.setItem("cart", JSON.stringify(cart));
 }
@@ -205,8 +204,6 @@ function plus(e) {
 }
 /* function plus end */
 
-
-
 let cartLocal = localStorage.getItem("cart"); //string or null
 let purchasesLocal = localStorage.getItem("purchases");
 // let cartLocal = localStorage["cart"]; //string or undefined
@@ -220,7 +217,13 @@ try {
   //   cart ={};
   //   localStorage.setItem("cart",JSON.stringify(cart));
   // }
-  if (!(typeof purchases === "object" && purchases != null && !Array.isArray(purchases))) {
+  if (
+    !(
+      typeof purchases === "object" &&
+      purchases != null &&
+      !Array.isArray(purchases)
+    )
+  ) {
     purchases = {};
     localStorage.setItem("purchases", JSON.stringify(purchases));
   }
@@ -234,7 +237,27 @@ try {
   // console.dir(err);
   cart = {};
   localStorage.setItem("cart", JSON.stringify(cart));
-  
+
   purchases = {};
   localStorage.setItem("purchases", JSON.stringify(purchases));
+}
+
+let linkToCart = document.querySelector(".fullCart");
+linkToCart.addEventListener("click",modalWindow);
+
+function modalWindow(e) {
+  let infoStorage = localStorage.getItem("cart");
+  if (infoStorage === "{}") {
+    e.preventDefault();
+    let modal = document.querySelector("#modalWindow");
+    modal.classList.remove("body__backModal-visibility");
+  }
+}
+
+let modalWindowCloseButton = document.querySelector(".mCloseButton");
+modalWindowCloseButton.addEventListener("click", closeModalWindow);
+
+function closeModalWindow(){
+  let modal = document.querySelector("#modalWindow");
+  modal.classList.add("body__backModal-visibility");
 }

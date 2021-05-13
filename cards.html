@@ -10,6 +10,7 @@
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
     />
     <link rel="stylesheet" href="cards.css" />
+    <link rel="stylesheet" href="modal.css" />
   </head>
 
   <body class="body">
@@ -21,6 +22,20 @@
     </header>
 
     <div class="container body__container"></div>
+
+<div id="modalWindow" class="backModal body__backModal-visibility ">
+    <div class="modal backModal__modal ">
+      <div class="mHeader modal__mHeader">
+        <h1 class="mLogo modal__mLogo" >CART</h1>
+        <span class="mCloseButton fa-close"></span>
+      </div>
+      <div class="mBody">
+        <img class="mBody__imgEmptyCart" src="/img/empty_cart.png" alt="img empty cart">
+        <p class="mBody__sorryText">Sorry! Cart is empty</p>
+      </div>
+    </div>
+  </div>
+
     <script src="cards.js"></script>
   </body>
 </html>
@@ -35,3 +50,6 @@
 " >&#8722</button><input class="js-cart-count  count" type="text" name="card__count" size="5" value="1"><button class="js-plus-quantity amount">&#43</button><button class="addToCart js-add-to-cart" data-product-id="1">add to cart</button>
       </div>  
   </div>
+
+
+  
