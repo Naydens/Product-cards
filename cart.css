@@ -1,8 +1,11 @@
 .cartContainer {
   position: relative;
-  width: 1200px;
+  max-width: 1200px;
   height: 100%;
   margin: auto;
+}
+.cartContainer-visibility{
+display: none;
 }
 .item {
   width: 100%;
@@ -28,4 +31,13 @@
 .tabloOnCart {
   width: 400px;
   height: 100%;
+}
+.tabloOnCart__delete{
+  height: 50px;
+  width: 50px;
+  margin-right: 5px;
+  margin-top: 20px;
+}
+.tabloOnCart__delete-visibility{
+  display: none;
 }

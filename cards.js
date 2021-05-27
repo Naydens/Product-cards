@@ -124,7 +124,6 @@ for (let i = 0; i < inputCount.length; i++) {
 
 /* function add to cart start*/
 let cart = {};
-let purchases = {};
 
 for (let i = 0; i < addToCartButtons.length; i++) {
   const elem = addToCartButtons[i];
@@ -140,20 +139,6 @@ function addToCart(e) {
   if (cart[productId] === undefined) {
     cart[productId] = quantity;
 
-    fetch(`https://fakestoreapi.com/products/${productId}`)
-      .then((res) => res.json())
-      .then((json) => fillingInLocalStorage(json, productId));
-
-    function fillingInLocalStorage(data, prodId) {
-      let purchaseInfo = {};
-      purchaseInfo["id"] = prodId;
-      purchaseInfo["quantity"] = quantity;
-      purchaseInfo["price"] = data.price;
-      purchaseInfo["img"] = data.image;
-      purchaseInfo["title"] = data.title;
-      purchases[prodId] = purchaseInfo;
-      localStorage.setItem("purchases", JSON.stringify(purchases));
-    }
   } else {
     cart[productId] += quantity;
 
@@ -205,29 +190,16 @@ function plus(e) {
 /* function plus end */
 
 let cartLocal = localStorage.getItem("cart"); //string or null
-let purchasesLocal = localStorage.getItem("purchases");
 // let cartLocal = localStorage["cart"]; //string or undefined
 //undefined->catch
 //"hello"-> catch
 // int in string  "10" -> try
 try {
   cart = JSON.parse(cartLocal);
-  purchases = JSON.parse(purchasesLocal);
   // if(typeof cart === "number" || typeof cart === "boolean" || cart === null || Array.isArray(cart)){
   //   cart ={};
   //   localStorage.setItem("cart",JSON.stringify(cart));
   // }
-  if (
-    !(
-      typeof purchases === "object" &&
-      purchases != null &&
-      !Array.isArray(purchases)
-    )
-  ) {
-    purchases = {};
-    localStorage.setItem("purchases", JSON.stringify(purchases));
-  }
-
   if (!(typeof cart === "object" && cart != null && !Array.isArray(cart))) {
     cart = {};
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -237,11 +209,9 @@ try {
   // console.dir(err);
   cart = {};
   localStorage.setItem("cart", JSON.stringify(cart));
-
-  purchases = {};
-  localStorage.setItem("purchases", JSON.stringify(purchases));
 }
 
+//code for modalWindow
 let linkToCart = document.querySelector(".fullCart");
 linkToCart.addEventListener("click",modalWindow);
 
