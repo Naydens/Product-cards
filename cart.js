@@ -2,6 +2,8 @@ let parseInfoFromStorage = JSON.parse(localStorage.getItem("cart"));
 
 let divContainerCart = document.querySelector(".cartContainer");
 
+let orderPrice = 0;
+
 for (let key in parseInfoFromStorage) {
   fetch(`https://fakestoreapi.com/products/${key}`)
     .then((res) => res.json())
@@ -9,6 +11,10 @@ for (let key in parseInfoFromStorage) {
 }
 
 function loadInfoOnCartPage(data, quantity) {
+  orderPrice += data.price * quantity;
+  let h2OrderPrice = document.querySelector(".titleTotal");
+  h2OrderPrice.innerHTML = "Price per order: " + orderPrice;
+
   let divItem = document.createElement("div");
   divItem.className = "item cartContainer__item";
   divItem.id = data.id;
@@ -27,12 +33,16 @@ function loadInfoOnCartPage(data, quantity) {
 
   let buttonPlus = document.createElement("button");
   buttonPlus.innerHTML = "plus";
+  buttonPlus.setAttribute("id", "plus");
+  buttonPlus.addEventListener("click", moreItems);
   divTabloOnCart.appendChild(buttonPlus);
 
   let inputQuantity = document.createElement("input");
   inputQuantity.value = quantity;
 
   let buttonMinus = document.createElement("button");
+  buttonMinus.setAttribute("id", "minus");
+  buttonMinus.addEventListener("click", lessItems);
   buttonMinus.innerHTML = "minus";
 
   let buttonDelete = document.createElement("button");
@@ -44,6 +54,7 @@ function loadInfoOnCartPage(data, quantity) {
   h4ItemPrice.innerHTML = "Price for item: " + data.price;
 
   let h4TotalPrice = document.createElement("h4");
+  h4TotalPrice.setAttribute("id", `total${data.id}`);
   h4TotalPrice.innerHTML = "Total price: " + data.price * quantity;
 
   divTabloOnCart.appendChild(buttonPlus);
@@ -60,6 +71,48 @@ function loadInfoOnCartPage(data, quantity) {
   divContainerCart.appendChild(divItem);
 }
 
+function moreItems(e) {
+  let input = e.target.nextSibling;
+  input.value++;
+
+  let itemId = input.parentNode.parentNode.id;
+  let objLocal = JSON.parse(localStorage.getItem("cart"));
+  let inputValue = input.value;
+
+  objLocal[itemId] = Number(inputValue);
+  localStorage.setItem("cart", JSON.stringify(objLocal));
+
+  fetch(`https://fakestoreapi.com/products/${itemId}`)
+    .then((res) => res.json())
+    .then((json) => totalPricePrint(json, inputValue));
+}
+
+function lessItems(e) {
+  let input = e.target.previousSibling;
+  input.value--;
+
+  let itemId = input.parentNode.parentNode.id;
+  let objLocal = JSON.parse(localStorage.getItem("cart"));
+  let inputValue = input.value;
+
+  objLocal[itemId] = Number(inputValue);
+  localStorage.setItem("cart", JSON.stringify(objLocal));
+
+  fetch(`https://fakestoreapi.com/products/${itemId}`)
+    .then((res) => res.json())
+    .then((json) => totalPricePrint(json, inputValue));
+}
+
+function totalPricePrint(data, value) {
+  let totalItems = document.getElementById(`total${data.id}`);
+  let price = data.price * value;
+  let total = document.querySelector("#total");
+  totalItems.innerHTML = "Total price: " + price;
+  orderPrice += data.price;
+  total.innerHTML = "Total price for all: " + orderPrice;
+  //cut for two numbers
+}
+
 function deleteItem(e) {
   e.target.parentNode.className = "tabloOnCart__delete-visibility";
 
@@ -67,16 +120,15 @@ function deleteItem(e) {
   delete objLocal[e.target.parentNode.id];
 
   if (JSON.stringify(objLocal) === "{}") {
-
-    let divContainerItem = document.querySelector(".cartContainer");
+    let divContainer = document.querySelector(".container");
     let emptyCartWindow = document.querySelector(".emptyCartWindow-visibility");
 
     emptyCartWindow.classList.add("emptyCartWindow");
     emptyCartWindow.classList.remove("emptyCartWindow-visibility");
 
-    divContainerItem.classList.add("cartContainer-visibility");
-    divContainerItem.classList.remove("cartContainer");
-
+    divContainer.classList.add("cartContainer-visibility");
+    divContainer.classList.remove("cartContainer");
   }
+
   localStorage.setItem("cart", JSON.stringify(objLocal));
 }
