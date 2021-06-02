@@ -55,7 +55,7 @@ function loadInfoOnCartPage(data, quantity) {
 
   let h4TotalPrice = document.createElement("h4");
   h4TotalPrice.setAttribute("id", `total${data.id}`);
-  h4TotalPrice.innerHTML = "Total price: " + data.price * quantity;
+  h4TotalPrice.innerHTML = "Price for items: "+data.price*quantity;
 
   divTabloOnCart.appendChild(buttonPlus);
   divTabloOnCart.appendChild(inputQuantity);
@@ -73,45 +73,52 @@ function loadInfoOnCartPage(data, quantity) {
 
 function moreItems(e) {
   let input = e.target.nextSibling;
+  let itemId = input.parentNode.parentNode.id;
+  fetch(`https://fakestoreapi.com/products/${itemId}`)
+    .then((res) => res.json())
+    .then((json) => calculateAndShowPlus(json, input));
+}
+
+function calculateAndShowPlus(data, input) {
   input.value++;
 
-  let itemId = input.parentNode.parentNode.id;
   let objLocal = JSON.parse(localStorage.getItem("cart"));
-  let inputValue = input.value;
-
-  objLocal[itemId] = Number(inputValue);
+  objLocal[data.id] = Number(input.value);
   localStorage.setItem("cart", JSON.stringify(objLocal));
 
-  fetch(`https://fakestoreapi.com/products/${itemId}`)
-    .then((res) => res.json())
-    .then((json) => totalPricePrint(json, inputValue));
-}
+  let h4PriceItems = document.getElementById(`total${data.id}`);
+  h4PriceItems.innerHTML = "Price for items: "+data.price*input.value;
 
-function lessItems(e) {
-  let input = e.target.previousSibling;
-  input.value--;
-
-  let itemId = input.parentNode.parentNode.id;
-  let objLocal = JSON.parse(localStorage.getItem("cart"));
-  let inputValue = input.value;
-
-  objLocal[itemId] = Number(inputValue);
-  localStorage.setItem("cart", JSON.stringify(objLocal));
-
-  fetch(`https://fakestoreapi.com/products/${itemId}`)
-    .then((res) => res.json())
-    .then((json) => totalPricePrint(json, inputValue));
-}
-
-function totalPricePrint(data, value) {
-  let totalItems = document.getElementById(`total${data.id}`);
-  let price = data.price * value;
   let total = document.querySelector("#total");
-  totalItems.innerHTML = "Total price: " + price;
   orderPrice += data.price;
+    //cut for two numbers
   total.innerHTML = "Total price for all: " + orderPrice;
-  //cut for two numbers
 }
+
+function lessItems(e){
+  let input = e.target.previousSibling;
+  let itemId = input.parentNode.parentNode.id;
+  fetch(`https://fakestoreapi.com/products/${itemId}`)
+    .then((res) => res.json())
+    .then((json) => calculateAndShowMinus(json, input));
+}
+
+function calculateAndShowMinus(data, input){
+  input.value--
+
+  let objLocal = JSON.parse(localStorage.getItem("cart"));
+  objLocal[data.id] = Number(input.value);
+  localStorage.setItem("cart", JSON.stringify(objLocal));
+
+  let h4PriceItems = document.getElementById(`total${data.id}`);
+  h4PriceItems.innerHTML = "Price for items: "+data.price*input.value;
+
+  let total = document.querySelector("#total");
+  orderPrice -= data.price;
+    //cut for two numbers
+  total.innerHTML = "Total price for all: " + orderPrice;
+}
+
 
 function deleteItem(e) {
   e.target.parentNode.className = "tabloOnCart__delete-visibility";

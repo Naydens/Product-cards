@@ -7,13 +7,26 @@
     <title>Document</title>
     <link rel="stylesheet" href="cart.css" />
     <link rel="stylesheet" href="emptyCart.css" />
+    <link rel="stylesheet" href="forma.css" />
   </head>
   <body class="body">
     <div class="container">
       <div class="cartContainer"></div>
       <div class="totalPriceItems">
         <h2 id="total" class="titleTotal"></h2>
-        <button class="order">order</button>
+
+        <form action="" class="forma">
+          <label for="POST-name"> Name: </label>
+          <input id ="POST-name" type="text" name="name" /><br />
+
+          <label for="POST-surname"> Surname: </label>
+          <input id="POST-surname" type="text" name="surname" />
+          <br />
+          <label for="POST-phone"> Phone number: </label>
+          <input id="POST-phone" type="text" />
+           <br/>
+          <button type="submit">order</button>
+        </form>
       </div>
     </div>
 
