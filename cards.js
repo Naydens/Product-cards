@@ -92,7 +92,7 @@ function showInfoCards(data) {
 }
 /* fetch, show data on page end */
 
-/* validation */
+
 for (let i = 0; i < inputCount.length; i++) {
   const elem = inputCount[i];
   elem.addEventListener("input", OnlyNumbersValidation);

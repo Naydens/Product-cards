@@ -34,6 +34,9 @@
   width: 600px;
   height: 100%;
 }
+.tabloOnCart__input{
+  margin: 0 3px;
+}
 .tabloOnCart {
   width: 400px;
   height: 100%;
