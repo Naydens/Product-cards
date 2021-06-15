@@ -17,14 +17,17 @@
 
         <form action="" class="forma">
           <label for="POST-name" class="forma__lable"> Name: </label>
-          <input id ="POST-name" class="forma__input js-placeholder" type="text" placeholder="name" name="name" /><br />
+          <input id ="POST-name" class="forma__input js-placeholder" type="text" placeholder="name" name="name" /><br/>
+          <div class="errorMessage"></div>  
 
           <label for="POST-surname" class="forma__lable"> Surname: </label>
           <input id="POST-surname" class="forma__input js-placeholder"  type="text" placeholder="surname" name="surname" />
-          <br />
+          <br/>
+          
           <label for="POST-phone" class="forma__lable"> Phone number: </label>
-          <input id="POST-phone" class="forma__input js-placeholder" type="text" placeholder="phone" name="phone" />
-           <br/>
+          <input id="POST-phone" class="forma__input js-placeholder" type="text" placeholder="phone" name="phone" /><br/>
+           <div class="errorMessage"></div> 
+  
           <button type="submit" class="forma__button">order</button>
         </form>
       </div>

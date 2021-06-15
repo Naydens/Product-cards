@@ -92,6 +92,8 @@ function calculateAndShowPlus(data, input) {
 
   let objLocal = JSON.parse(localStorage.getItem("cart"));
   objLocal[data.id] = Number(input.value);
+  // objLocal[data.id] = parseInt(input.value);
+  console.log(typeof(objLocal[data.id]));
   localStorage.setItem("cart", JSON.stringify(objLocal));
 
   let h4PriceItems = document.getElementById(`total${data.id}`);

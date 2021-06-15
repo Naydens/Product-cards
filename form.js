@@ -24,9 +24,8 @@ function changePlacaholderBlur(e) {
   }
 }
 
-
-
 buttonOrder.addEventListener("click", submitOrder);
+
 function validate(text, rule) {
   const config = {
     required: isRequired,
@@ -49,20 +48,33 @@ function validate(text, rule) {
   }
 
   function isRequired(text) {
-    return text !== "";
+    if (text === "") {
+      return "fill in the field";
+    }
   }
 
   function minLength(text, min) {
-    return text.length >= min;
+    if (text.length < min) {
+      return "min quantity : " + min;
+    }
   }
 
-  const result = allResponses.some((elem) => {
-    if (!elem) {
+  let indexErrorMsg;
+
+  allResponses.some((elem, index) => {
+    if (typeof elem === "string") {
+      indexErrorMsg = index;
       return true;
     }
   });
+  return allResponses[indexErrorMsg];
+}
 
-  return !result;
+function getDivError(elem) {
+  if (elem.nextSibling.localName === "div") {
+    return elem.nextSibling;
+  }
+  return getDivError(elem.nextSibling);
 }
 
 function submitOrder(e) {
@@ -75,10 +87,29 @@ function submitOrder(e) {
 
   for (key in rules) {
     const elem = form.elements[key];
-    const isValid = validate(elem.value, rules[key]);
-    if (!isValid) {
-      //show validation error to user
+    const checkInput = validate(elem.value, rules[key]); // return undefined || "error msg"
+    const errorDivElem = getDivError(elem);
+
+    if (checkInput) {
+      errorDivElem.innerHTML = checkInput;
       e.preventDefault();
+    } else {
+      errorDivElem.innerHTML = "";
     }
   }
 }
+// else{
+//   fetch('https://fakestoreapi.com/carts',{
+//     method:"POST",
+//     body:JSON.stringify(
+//         {
+//            name:"Nadya",
+//            surename:"fgsj",
+//            phone:"52145362",
+//             products:[{productId:5,quantity:1},{productId:1,quantity:5}]
+//         }
+//     )
+// })
+//     .then(res=>res.json())
+//     .then(json=>console.log(json))
+// }
