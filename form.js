@@ -2,6 +2,8 @@ let buttonOrder = document.querySelector(".forma__button");
 
 let arrPlaceholders = document.querySelectorAll(".js-placeholder");
 
+let form = document.querySelector(".forma");
+
 for (let i = 0; i < arrPlaceholders.length; i++) {
   arrPlaceholders[i].addEventListener("focus", changePlacaholderFocus);
 }
@@ -23,6 +25,11 @@ function changePlacaholderBlur(e) {
     input.placeholder = input.name;
   }
 }
+
+const rules = {
+  name: "required|min:3",
+  phone: "required|min:10",
+};
 
 buttonOrder.addEventListener("click", submitOrder);
 
@@ -78,13 +85,6 @@ function getDivError(elem) {
 }
 
 function submitOrder(e) {
-  let form = document.querySelector(".forma");
-
-  const rules = {
-    name: "required|min:3",
-    phone: "required",
-  };
-
   for (key in rules) {
     const elem = form.elements[key];
     const checkInput = validate(elem.value, rules[key]); // return undefined || "error msg"
@@ -98,6 +98,25 @@ function submitOrder(e) {
     }
   }
 }
+
+for (let i = 0; i < form.elements.length; i++) {
+  const input = form.elements[i];
+  if (rules[input.name] !== undefined) {
+    input.oninput = checkField;
+  }
+}
+
+function checkField() {
+  const checkInput = validate(this.value, rules[this.name]); // return undefined || "error msg"
+  const errorDivElem = getDivError(this);
+
+  if (checkInput) {
+    errorDivElem.innerHTML = checkInput;
+  } else {
+    errorDivElem.innerHTML = "";
+  }
+}
+
 // else{
 //   fetch('https://fakestoreapi.com/carts',{
 //     method:"POST",
